@@ -22,7 +22,7 @@ const typeDefs = gql`
       password: String!
     ): User
 
-    login(
+    authenticate(
       username: String!
       password: String!
     ): Token

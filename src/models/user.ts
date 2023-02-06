@@ -4,7 +4,14 @@ import { ReturnedUser } from '../types';
 const userSchema = new Mongoose.Schema({
   username: { type: String, minlength: 3},
   name: { type: String, minlength: 4},
+  courses: [
+    {
+      type: Mongoose.Schema.Types.ObjectId,
+      ref: 'Course'
+    }
+  ],
   passwordHash: String,
+
 });
 
 userSchema.set('toJSON', {

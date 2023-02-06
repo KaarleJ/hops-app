@@ -12,7 +12,7 @@ module.exports=
     "es6": true
   },
   "rules": {
-    "@typescript-eslint/semi": ["error"],
+    "@typescript-eslint/semi": ["always"],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/restrict-template-expressions": "off",

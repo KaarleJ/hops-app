@@ -13,6 +13,17 @@ const resolvers = {
   Query: {
     userCount: async () => {
       await User.collection.countDocuments();
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Me: async (_root: unknown, _args: unknown, context: any ) => {
+      const id = context.currentUser ? context.currentUser.id as string: null;
+      console.log(context);
+      
+      if (!id) {
+        throw new UserInputError('No authentication');
+      }
+      const user = await User.findById(id);
+      return user;
     }
   },
   Mutation: {

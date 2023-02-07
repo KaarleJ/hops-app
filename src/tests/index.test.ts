@@ -2,7 +2,7 @@ import typeDefs from "../apolloSchema/typeDefs";
 import resolvers from "../apolloSchema/resolvers";
 import User from "../models/user";
 import Course from "../models/course";
-import { sentUser, ReturnedCourse, UserType } from "../types";
+import { SentUser, ReturnedCourse, UserType } from "../types";
 import { ApolloServer } from "@apollo/server";
 import mongoose from "mongoose";
 import * as dotenv from 'dotenv';
@@ -41,7 +41,7 @@ describe('Queries and Mutations:', () => {
     
     assert(response.body.kind === 'single')
 
-    const data = response.body.singleResult.data?.createUser as sentUser;
+    const data = response.body.singleResult.data?.createUser as SentUser;
 
     expect(data).toHaveProperty('username', 'HopTester')
     expect(data).toHaveProperty('name', 'Hop Tester')
@@ -169,4 +169,27 @@ describe('Queries and Mutations:', () => {
 
     expect(data.courses).toHaveLength(1);
   })
+
+  it('Me query returns the right values', async () => {
+    const response = await testServer.executeOperation({
+      query: 'query Me { Me { id name username courses { code ects endPeriod id name startPeriod year} } }',
+    },
+    {
+      contextValue: {
+        currentUser: {
+          id: contextId
+        }
+      }
+    }
+    );
+    
+    assert(response.body.kind === 'single');
+
+    const data = response.body.singleResult.data?.Me as Omit<UserType, 'passwordHash'>;
+
+    expect(data.name).toBe('Hop Tester');
+    expect(data.username).toBe('HopTester');
+    expect(data.id).toBe(contextId)
+    expect(data.courses).toHaveLength(1);
+  });
 });

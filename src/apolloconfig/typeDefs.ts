@@ -8,6 +8,12 @@ const typeDefs = gql`
     id: String!
   }
 
+  type NewUser {
+    username: String!
+    name: String!
+    id: String!
+  }
+
   type Token {
     value: String
   }
@@ -32,7 +38,7 @@ const typeDefs = gql`
       username: String!
       name: String!
       password: String!
-    ): User
+    ): NewUser
 
     addCourse(
       name: String!
@@ -42,6 +48,10 @@ const typeDefs = gql`
       startPeriod: Int
       endPeriod: Int
     ): Course
+
+    removeCourse(
+      id: String!
+    ): User
 
     authenticate(
       username: String!

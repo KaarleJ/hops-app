@@ -4,7 +4,6 @@ import { ReturnedCourse } from '../types';
 const courseSchema = new Mongoose.Schema({
   name: String,
   code: String,
-  id: String,
   ects: Number,
   year: Number,
   startPeriod: Number,

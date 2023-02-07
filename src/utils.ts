@@ -5,7 +5,7 @@ const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
 };
 
-const parseString = (string: unknown, field: string): string => {
+export const parseString = (string: unknown, field: string): string => {
   if (!string || !isString(string)) {
     throw new Error(`Incorrect or missing ${field}`);
   }

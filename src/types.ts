@@ -20,6 +20,8 @@ export type NewUser = Omit<UserType, 'id' | 'courses'>;
 
 export type EncodedUser = Omit<UserType, 'passwordHash' | 'name' | 'courses'>;
 
+export type sentUser = Omit<UserType, 'passwordHash' | 'courses'>;
+
 export interface Credentials {
   username: string,
   password: string,

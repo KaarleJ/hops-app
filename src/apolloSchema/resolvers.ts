@@ -113,7 +113,8 @@ const resolvers = {
         throw new UserInputError('No user with specified token');
       }
 
-      user.courses = user.courses.filter((course) => course.toString() === courseId);
+      user.courses = user.courses.filter((course) => course._id.toString() !== courseId);
+      
 
       try {
         await user.save();

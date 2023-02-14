@@ -189,7 +189,7 @@ describe('Queries and Mutations:', () => {
 
     expect(data.name).toBe('Hop Tester');
     expect(data.username).toBe('HopTester');
-    expect(data.id).toBe(contextId)
+    expect(data.id).toBe(contextId);
     expect(data.courses).toHaveLength(1);
   });
 });

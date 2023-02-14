@@ -10,7 +10,10 @@
     "dev": "ts-node-dev ./src/index.ts",
     "lint": "eslint --ext .ts .",
     "start": "node build/index.js",
-    "build:ui": "rm -rf build && npm run tsc && cd ../hops-app-frontend/ && npm run build && cp -r build ../hops-app-backend"
+    "build:ui": "rm -rf build && npm run tsc && cd ../hops-app-frontend/ && npm run build && cp -r build ../hops-app-backend",
+    "deploy": "flyctl deploy",
+    "deploy:full": "npm run build:ui && npm run deploy",
+    "logs:prod": "flyctl logs"
   },
   "author": "",
   "license": "ISC",

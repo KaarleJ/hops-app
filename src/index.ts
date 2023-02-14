@@ -15,7 +15,7 @@ dotenv.config();
 
 const MONGODB_URI =process.env.MONGODB_URI as string;
 const JWT_SECRET = process.env.JWT_SECRET as string;
-const PORT = Number(process.env.PORT) | 4000;
+const PORT = process.env.PORT || "4000" as string;
 
 
 console.log('connecting to', MONGODB_URI);

@@ -27,7 +27,7 @@ export interface Credentials {
   password: string,
 }
 
-export type Period = 0 | 1 | 2 | 3 | 4;
+export type Period = 0 | 1 | 2 | 3 | 4 | 5;
 
 export interface ReturnedCourse {
   name: string,

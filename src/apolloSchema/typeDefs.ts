@@ -43,10 +43,10 @@ const typeDefs = gql`
     addCourse(
       name: String!
       code: String!
-      ects: Int
-      year: Int
-      startPeriod: Int
-      endPeriod: Int
+      ects: Int!
+      year: Int!
+      startPeriod: Int!
+      endPeriod: Int!
     ): Course
 
     removeCourse(

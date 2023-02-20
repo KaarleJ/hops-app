@@ -6,6 +6,7 @@ import { UserType, EncodedUser } from "../types";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
+import { Course as course } from "../types";
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
@@ -23,6 +24,23 @@ const resolvers = {
       }
       const user = await User.findById(id).populate('courses');
       return user;
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    courses: async (_root: unknown, args: any, context: any) => {
+      const id = context.currentUser ? context.currentUser.id as string: null;
+      if (!id) {
+        throw new UserInputError('No authentication');
+      }
+      const user = await User.findById(id).populate('courses') as UserType;
+      if (!user) {
+        throw new UserInputError('No user with given token');
+      }
+      if (!args.year) {
+        throw new UserInputError('Year cannot be null');
+      }
+      const returnedCourses = user.courses as [course];
+      const courses = returnedCourses.filter((course) => course.year === Number(args.year))
+      return courses;
     }
   },
   Mutation: {

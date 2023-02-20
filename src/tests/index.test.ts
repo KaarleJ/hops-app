@@ -93,7 +93,7 @@ describe('Queries and Mutations:', () => {
 
   it('Course can be added', async () => {
     const response = await testServer.executeOperation({
-      query: 'mutation addCourse($name: String!, $code: String!, $ects: Int, $year: Int, $startPeriod: Int, $endPeriod: Int) { addCourse(name: $name, code: $code, ects: $ects, year: $year, startPeriod: $startPeriod, endPeriod: $endPeriod) { id name startPeriod year id endPeriod ects code} }',
+      query: 'mutation addCourse($name: String!, $code: String!, $ects: Int!, $year: Int!, $startPeriod: Int!, $endPeriod: Int!) { addCourse(name: $name, code: $code, ects: $ects, year: $year, startPeriod: $startPeriod, endPeriod: $endPeriod) { id name startPeriod year id endPeriod ects code} }',
       variables: { name: "TestCourse", code: "TC", ects: 3, year: 2023, startPeriod: 3, endPeriod: 4 }
     },
     {
@@ -106,6 +106,7 @@ describe('Queries and Mutations:', () => {
     assert(response.body.kind === 'single');
 
     const data =  response.body.singleResult.data?.addCourse as ReturnedCourse;
+    
 
     expect(data).toHaveProperty('name', 'TestCourse')
     expect(data).toHaveProperty('code', 'TC')
@@ -118,7 +119,7 @@ describe('Queries and Mutations:', () => {
 
   it('Courseaddition will fail with invalid variable type', async () => {
     const response = await testServer.executeOperation({
-      query: 'mutation addCourse($name: String!, $code: String!, $ects: Int, $year: Int, $startPeriod: Int, $endPeriod: Int) { addCourse(name: $name, code: $code, ects: $ects, year: $year, startPeriod: $startPeriod, endPeriod: $endPeriod) { id name startPeriod year id endPeriod ects code} }',
+      query: 'mutation addCourse($name: String!, $code: String!, $ects: Int!, $year: Int!, $startPeriod: Int!, $endPeriod: Int!) { addCourse(name: $name, code: $code, ects: $ects, year: $year, startPeriod: $startPeriod, endPeriod: $endPeriod) { id name startPeriod year id endPeriod ects code} }',
       variables: { name: "TestCourse", code: "TC", ects: "3", year: 2023, startPeriod: 3, endPeriod: 4 }
     },
     {
@@ -135,7 +136,7 @@ describe('Queries and Mutations:', () => {
 
   it('Course can be removed', async () => {
     const initialResponse = await testServer.executeOperation({
-      query: 'mutation addCourse($name: String!, $code: String!, $ects: Int, $year: Int, $startPeriod: Int, $endPeriod: Int) { addCourse(name: $name, code: $code, ects: $ects, year: $year, startPeriod: $startPeriod, endPeriod: $endPeriod) { id name startPeriod year id endPeriod ects code} }',
+      query: 'mutation addCourse($name: String!, $code: String!, $ects: Int!, $year: Int!, $startPeriod: Int!, $endPeriod: Int!) { addCourse(name: $name, code: $code, ects: $ects, year: $year, startPeriod: $startPeriod, endPeriod: $endPeriod) { id name startPeriod year id endPeriod ects code} }',
       variables: { name: "TestCourse", code: "TC", ects: 3, year: 2023, startPeriod: 3, endPeriod: 4 }
     },
     {
@@ -191,5 +192,29 @@ describe('Queries and Mutations:', () => {
     expect(data.username).toBe('HopTester');
     expect(data.id).toBe(contextId);
     expect(data.courses).toHaveLength(1);
+  });
+
+  it('Courses query returns the right courses', async () => {
+    const response = await testServer.executeOperation({
+      query: 'query Courses($year: String!) {courses(year: $year) { code ects endPeriod id name startPeriod year} }',
+      variables: { year: "2023"}
+    },
+    {
+      contextValue: {
+        currentUser: {
+          id: contextId
+        }
+      }
+    }
+    );
+    
+    
+    assert(response.body.kind === 'single');
+
+    const data = response.body.singleResult.data?.courses as [ReturnedCourse];
+    
+
+    expect(data).toHaveLength(1);
+    expect(Number(data[0].year)).toBe(2023)
   });
 });

@@ -31,6 +31,9 @@ const typeDefs = gql`
   type Query {
     userCount: Int!
     Me: User!
+    courses(
+      year: String!
+    ): [Course!]!
   }
 
   type Mutation {

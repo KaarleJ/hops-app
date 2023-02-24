@@ -17,7 +17,7 @@ const isNumber = (number: unknown): number is number => {
 };
 
 const parseNumber = (number: unknown, field: string): number => {
-  if (!number || !isNumber(number)) {
+  if (!isNumber(number)) {
     throw new Error(`Incorrect or missing ${field}`);
   }
   return number;
@@ -56,8 +56,10 @@ const parsePeriod = (period: unknown): Period => {
       return 3;
     case 4:
       return 4;
+    case 5:
+      return 5
     default:
-      throw new Error('Incorrect period. Must be 0, 1, 2, 3 or 4.')
+      throw new Error('Incorrect period. Must be 0, 1, 2, 3,4  or 5.')
   }
 }
 

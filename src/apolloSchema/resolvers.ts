@@ -40,6 +40,7 @@ const resolvers = {
       }
       const returnedCourses = user.courses as [course];
       const courses = returnedCourses.filter((course) => course.year === Number(args.year))
+      
       return courses;
     }
   },
@@ -132,7 +133,7 @@ const resolvers = {
       }
 
       user.courses = user.courses.filter((course) => course._id.toString() !== courseId);
-      
+      await Course.findByIdAndDelete(courseId)
 
       try {
         await user.save();

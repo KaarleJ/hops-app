@@ -13,7 +13,7 @@ module.exports=
     "jest": true
   },
   "rules": {
-    "@typescript-eslint/semi": ["always"],
+    "@typescript-eslint/semi": [2],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
@@ -23,7 +23,15 @@ module.exports=
       "error",
       { "argsIgnorePattern": "^_" }
     ],
-    "no-case-declarations": "off"
+    "no-case-declarations": "off",
+    "indent": ["error", 2, { "SwitchCase": 1}],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "eqeqeq": "error",
+    "no-trailing-spaces": "error",
+    "object-curly-spacing": ["error", "always"],
+    "arrow-spacing": ["error", { before: true, after: true }]
+    
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

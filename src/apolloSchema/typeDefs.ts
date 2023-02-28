@@ -31,17 +31,11 @@ const typeDefs = gql`
   type Query {
     userCount: Int!
     Me: User!
-    courses(
-      year: String!
-    ): [Course!]!
+    courses(year: String!): [Course!]!
   }
 
   type Mutation {
-    createUser(
-      username: String!
-      name: String!
-      password: String!
-    ): NewUser
+    createUser(username: String!, name: String!, password: String!): NewUser
 
     addCourse(
       name: String!
@@ -52,14 +46,9 @@ const typeDefs = gql`
       endPeriod: Int!
     ): Course
 
-    removeCourse(
-      id: String!
-    ): User
+    removeCourse(id: String!): User
 
-    authenticate(
-      username: String!
-      password: String!
-    ): Token
+    authenticate(username: String!, password: String!): Token
   }
 `;
 

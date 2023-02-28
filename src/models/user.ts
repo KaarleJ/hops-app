@@ -2,16 +2,15 @@ import Mongoose from 'mongoose';
 import { ReturnedUser } from '../types';
 
 const userSchema = new Mongoose.Schema({
-  username: { type: String, minlength: 3, unique: true},
-  name: { type: String, minlength: 4},
+  username: { type: String, minlength: 3, unique: true },
+  name: { type: String, minlength: 4 },
   courses: [
     {
       type: Mongoose.Schema.Types.ObjectId,
-      ref: 'Course'
-    }
+      ref: 'Course',
+    },
   ],
   passwordHash: String,
-
 });
 
 userSchema.set('toJSON', {
@@ -20,7 +19,7 @@ userSchema.set('toJSON', {
     delete returnedObject._id;
     delete returnedObject._v;
     delete returnedObject.passwordHash;
-  }
+  },
 });
 
 export default Mongoose.model('User', userSchema);

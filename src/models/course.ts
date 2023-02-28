@@ -15,7 +15,7 @@ courseSchema.set('toJSON', {
     returnedObject.id = returnedObject._id?.toString() as string;
     delete returnedObject._id;
     delete returnedObject._v;
-  }
+  },
 });
 
 export default Mongoose.model('Course', courseSchema);

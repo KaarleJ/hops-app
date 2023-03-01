@@ -48,6 +48,16 @@ const typeDefs = gql`
 
     removeCourse(id: String!): User
 
+    editCourse(
+      id: String!
+      name: String
+      code: String
+      ects: Int
+      year: Int
+      startPeriod: Int
+      endPeriod: Int
+    ): Course
+
     authenticate(username: String!, password: String!): Token
   }
 `;

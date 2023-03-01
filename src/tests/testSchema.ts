@@ -71,6 +71,36 @@ export const REMOVE_COURSE = gql`
   }
 `;
 
+export const EDIT_COURSE = gql`
+  mutation EditCourse(
+    $editCourseId: String!
+    $name: String
+    $code: String
+    $ects: Int
+    $year: Int
+    $startPeriod: Int
+    $endPeriod: Int
+  ) {
+    editCourse(
+      id: $editCourseId
+      name: $name
+      code: $code
+      ects: $ects
+      year: $year
+      startPeriod: $startPeriod
+      endPeriod: $endPeriod
+    ) {
+      name
+      code
+      id
+      ects
+      year
+      startPeriod
+      endPeriod
+    }
+  }
+`;
+
 export const ME = gql`
   query Me {
     Me {

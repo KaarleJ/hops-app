@@ -9,7 +9,7 @@ import {
 import { ApolloServer } from '@apollo/server';
 import assert from 'assert';
 import helper from './test_helper';
-import { ADD_COURSE, AUTHENTICATE, REMOVE_COURSE, SIGNUP } from './testSchema';
+import { ADD_COURSE, AUTHENTICATE, REMOVE_COURSE, EDIT_COURSE, SIGNUP } from './testSchema';
 import User from '../models/User';
 import Course from '../models/Course';
 
@@ -178,5 +178,48 @@ describe('Mutations with seed data', () => {
 
     expect(data.courses).toHaveLength(2);
     expect(newUser.courses.length).toBe(user.courses.length - 1);
+  });
+
+  it('Courses can be edited', async () => {
+    const course = (await Course.findOne({
+      name: 'Tester2TestCourse1',
+    })) as unknown as CourseType;
+    const user = (await User.findOne({
+      username: 'Tester2',
+    })) as unknown as UserType;
+    const response = await testServer.executeOperation(
+      {
+        query: EDIT_COURSE,
+        variables: {
+          editCourseId: course.id,
+          name: 'Tester2TestCourse1',
+          code: 'TEST2revised',
+          ects: 8,
+          year: 2023,
+          endPeriod: 2,
+          startPeriod: 2
+        },
+      },
+      {
+        contextValue: {
+          currentUser: {
+            id: user.id,
+          },
+        },
+      }
+    );
+
+    assert(response.body.kind === 'single');
+
+    const data = response.body.singleResult.data?.editCourse as CourseType;
+    const newCourse = await Course.findOne({ name: 'Tester2TestCourse1' }) as unknown as CourseType;
+
+    expect(data.name).toBe(newCourse.name);
+    expect(data.code).toBe(newCourse.code);
+    expect(data.ects).toBe(newCourse.ects);
+    expect(data.year).toBe(2023);
+    expect(data.endPeriod).toBe(2);
+    expect(data.startPeriod).toBe(2);
+
   });
 });

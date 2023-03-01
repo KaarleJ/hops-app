@@ -16,7 +16,7 @@ const isNumber = (number: unknown): number is number => {
   return typeof number === 'number';
 };
 
-const parseNumber = (number: unknown, field: string): number => {
+export const parseNumber = (number: unknown, field: string): number => {
   if (!isNumber(number)) {
     throw new Error(`Incorrect or missing ${field}`);
   }
@@ -51,7 +51,7 @@ export const toCredentials = ({
   return credentials;
 };
 
-const parsePeriod = (period: unknown): Period => {
+export const parsePeriod = (period: unknown): Period => {
   switch (parseNumber(period, 'period')) {
     case 0:
       return 0;

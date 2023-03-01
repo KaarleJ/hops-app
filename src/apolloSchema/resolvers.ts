@@ -1,7 +1,14 @@
 import User from '../models/User';
 import Course from '../models/Course';
 import { UserInputError } from 'apollo-server';
-import { toUser, toCredentials, toCourse, parseString } from '../utils';
+import {
+  toUser,
+  toCredentials,
+  toCourse,
+  parseString,
+  parseNumber,
+  parsePeriod,
+} from '../utils';
 import { UserType, EncodedUser } from '../types';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -168,6 +175,46 @@ const resolvers = {
       }
 
       return user;
+    },
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    editCourse: async (_root: unknown, args: any, context: any) => {
+      const id = context.currentUser
+        ? (context.currentUser.id as string)
+        : null;
+      const courseId = parseString(args.id, 'courseId');
+
+      if (!id) {
+        throw new UserInputError('No authentication');
+      }
+
+      const course = (await Course.findById(courseId));
+
+      if (!course) {
+        throw new UserInputError('No course found with given id');
+      }
+
+      course.name = args.name ? parseString(args.name, 'name') : course.name;
+      course.code = args.code ? parseString(args.code, 'code') : course.code;
+      course.ects = args.ects ? parseNumber(args.ects, 'ects') : course.ects;
+      course.year = args.year ? parseNumber(args.year, 'year') : course.year;
+      course.startPeriod = args.startPeriod
+        ? parsePeriod(args.startPeriod)
+        : course.startPeriod;
+      course.endPeriod = args.endPeriod
+        ? parsePeriod(args.endPeriod)
+        : course.endPeriod;
+      try {
+        await course.save();
+      } catch(error: unknown) {
+        if (error instanceof Error) {
+          throw new UserInputError(error.message, {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            invalidArgs: args
+          });
+        }
+      }
+      return course;
     },
   },
 };

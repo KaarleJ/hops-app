@@ -2,6 +2,7 @@ import User from './models/User';
 import { EncodedUser } from './types';
 import typeDefs from './apolloSchema/typeDefs';
 import resolvers from './apolloSchema/resolvers';
+import testingRouter from './tests/testRouter';
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import cors from 'cors';
@@ -10,7 +11,6 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import path from 'path';
 import * as dotenv from 'dotenv';
-import Course from './models/Course';
 dotenv.config();
 
 const MONGODB_URI = process.env.TS_NODE_DEV ? process.env.TEST_MONGODB_URI as string : process.env.MONGODB_URI as string;
@@ -64,6 +64,7 @@ const start = async () => {
   app.use(cors());
   app.use(express.static('build'));
   app.use(express.json());
+  app.use('/api/testing', testingRouter);
 
   app.get('/*', (_req, res) => {
     res.sendFile(path.join(__dirname, '../build/index.html'), (error) => {
@@ -74,23 +75,6 @@ const start = async () => {
         }
       }
     });
-  });
-
-  app.post('/api/testing/reset', (_req, res) => {
-    if (process.env.TS_NODE_DEV) {
-      const empty = async () => {
-        await Course.deleteMany({});
-        await User.deleteMany({});
-      };
-      empty().then(() => {
-        console.log('Emptied database');
-      }).catch((e) => {
-        console.log(e);
-      });
-      res.status(204).end();
-    } else {
-      res.end(404);
-    }
   });
 
   app.listen({ port: PORT }, () => {

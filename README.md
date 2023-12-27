@@ -7,4 +7,6 @@ Project frontend [here](https://github.com/KaarleJ/hops-app-frontend).
 
 The backend was developed with TypeScript, NodeJs, ExpressJs, Apollo GQL and MongoDB. I used Jest and Cypress for unit and E2E tests.
 
+ps. Don't take a look at the utils.ts file. You might get sick.
+
 This app is deployed on fly.io [here](https://hops.fly.dev/).

@@ -1,7 +1,3 @@
 node_modules
 build
 .env
-Dockerfile
-fly
-fly.toml
-.dockerignore
